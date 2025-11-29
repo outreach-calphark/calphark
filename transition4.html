@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Please wait</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: url('giphy.gif') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo {
+      width: 200px;
+      max-width: 60%;
+      filter: drop-shadow(0 0 10px rgba(228, 64, 137, 0.7)) 
+              drop-shadow(0 0 20px rgba(129, 77, 155, 0.6)) 
+              drop-shadow(0 0 30px rgba(74, 77, 175, 0.5));
+      animation: logoPulse 4s ease-in-out infinite, shinyGlow 3s linear infinite;
+      position: relative;
+      background: linear-gradient(
+        90deg,
+        rgba(228, 64, 137, 0.3) 25%, /* Pink */
+        rgba(129, 77, 155, 0.5) 50%, /* Purple */
+        rgba(74, 77, 175, 0.3) 75%  /* Blue */
+      );
+      background-size: 200% 100%;
+      -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    @keyframes shinyGlow {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    @keyframes logoPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(228, 64, 137, 0.7)) 
+                drop-shadow(0 0 20px rgba(129, 77, 155, 0.6)) 
+                drop-shadow(0 0 30px rgba(74, 77, 175, 0.5));
+      }
+      50% {
+        filter: drop-shadow(0 0 20px rgba(228, 64, 137, 1)) 
+                drop-shadow(0 0 40px rgba(129, 77, 155, 1)) 
+                drop-shadow(0 0 60px rgba(74, 77, 175, 1));
+      }
+    }
+
+    .loader-container {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin-top: 40px;
+    }
+
+    .orb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: orbit 1.8s linear infinite;
+    }
+
+    .orb:nth-child(1) { background: #E44089; animation-delay: 0s; }
+    .orb:nth-child(2) { background: #814D9B; animation-delay: 0.2s; }
+    .orb:nth-child(3) { background: #4A4DAF; animation-delay: 0.4s; }
+    .orb:nth-child(4) { background: #2266B1; animation-delay: 0.6s; }
+    .orb:nth-child(5) { background: #11406E; animation-delay: 0.8s; }
+
+    @keyframes orbit {
+      0% {
+        transform: rotate(0deg) translateX(25px) rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg) translateX(25px) rotate(-360deg);
+      }
+    }
+  </style>
+  <script>
+    // Redirect to terms.html after 7 seconds
+    setTimeout(function () {
+      window.location.href = "https://whatsapp.com/channel/0029VbAVuM6LtOj4SAWGp72W";
+    }, 7000);
+  </script>
+</head>
+<body>
+  <!-- Replace android-chrome-192x192.png' with your actual logo path -->
+  <img src="android-chrome-512x512.png" alt="Calphark Logo" class="logo" />
+  <div class="loader-container">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+<script>window.history.pushState({}, '', '/');</script>
+</body>
+</html>

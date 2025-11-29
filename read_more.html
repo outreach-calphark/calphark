@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calphark - Read More</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1f0030, #000020);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        .content {
+            padding: 2rem;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 1rem 2.5rem;
+            font-size: 1.4rem;
+            color: #1f0030;
+            background-color: #ffd700;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #fff;
+            color: #1f0030;
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(255, 215, 0, 0.6);
+        }
+        .moving-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .moving-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .toggle-section {
+            margin: 1rem 0;
+        }
+        .toggle-header {
+            background-color: #ffd700;
+            color: #1f0030;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .toggle-header:hover {
+            background-color: #fff;
+        }
+        .toggle-content {
+            display: none;
+            padding: 1rem;
+            border-left: 4px solid #ffd700;
+            margin-top: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="moving-background">
+    <img src="giphy.gif" alt="Background Animation">
+</div>
+<div class="content">
+    <h2>Calphark: A New Frontier for Purposeful Collaboration</h2>
+    <div class="toggle-section">
+        <div class="toggle-header">What is Calphark?</div>
+        <div class="toggle-content">
+            <p>Calphark is a structured engagement platform designed to foster high-value interactions, collaboration, and long-term opportunities. It goes beyond traditional networking by creating an environment where ideas, talent, and ambition converge with purpose.
+            <p>Unlike conventional networking events, Calphark is not just about making contacts—it’s about enabling strategic connections that lead to tangible outcomes.</p>
+</p>
+        </div>
+    </div>
+    <div class="toggle-section">
+        <div class="toggle-header">Why Calphark?</div>
+        <div class="toggle-content">
+            <ul><p>Many professional events focus on transactional exchanges or one-time interactions that rarely lead to meaningful progress. Calphark takes a different approach by:</p>
+                <li>✔ Curating connections intelligently rather than relying on chance.
+</li>
+                <li>✔ Providing a structured yet flexible framework where interactions lead to action.
+</li>
+                <li>✔ Focusing on long-term impact, ensuring participants leave with more than just a list of contacts.</li>
+            <p>At Calphark, the objective is not just to meet people—it is to align individuals with shared goals, complementary skill sets, and real opportunities for collaboration.</p>
+            </ul>
+        </div>
+    </div>
+    <div class="toggle-section">
+        <div class="toggle-header">Who is Calphark For?</div>
+        <div class="toggle-content">
+            <p>Calphark welcomes anyone seeking to create, collaborate, or contribute. Whether you're a student, innovator, or explorer of ideas, Calphark adapts to your journey.</p>
+            <ul>
+                <li>✔ Aspiring builders and idea-owners.</li>
+                <li>✔ Collaborators looking for meaningful teams.</li>
+                <li>✔ Those who prefer substance over status.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="toggle-section">
+        <div class="toggle-header">Incentives & Ecosystem</div>
+        <div class="toggle-content">
+            <ul>
+                <li>🔹 Mentorship, visibility, and aligned partnerships.</li>
+                <li>🔹 Access to high-quality opportunities—not giveaways, but gateways.</li>
+                <li>🔹 Support for projects that show value and intention.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="toggle-section">
+        <div class="toggle-header">Looking Forward</div>
+        <div class="toggle-content">
+            <p>Calphark is still evolving. What makes it unique is not where it is today, but where it’s headed—toward a world where smart ecosystems enable meaningful creation and intelligent collaboration.</p>
+        </div>
+    </div>
+    <div class="toggle-section">
+        <div class="toggle-header">Join Us</div>
+        <div class="toggle-content">
+            <p>If this speaks to you, we’d love to hear from you. Your journey matters. Your ideas matter. And Calphark might just be the place where both find a future.</p>
+            <a href="https://register.calphark.com/" class="button" style="margin-top: 1rem; display: inline-block;">Fill the Form</a>
+        </div>
+    </div>
+    <a href="https://calphark.com" class="button">Back to Home</a>
+</div>
+<script>
+    document.querySelectorAll('.toggle-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const content = header.nextElementSibling;
+            content.style.display = content.style.display === 'none' ? 'block' : 'none';
+        });
+    });
+    document.querySelectorAll('.toggle-content').forEach(content => {
+        content.style.display = 'none';
+    });
+    
+</script>
+<script>window.history.pushState({}, '', '/read_more');</script>   
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About CALPHARK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <style>
+        /* Custom animation for a slower bounce */
+        @keyframes bounce-slow {
+
+            0%,
+            100% {
+                transform: translateY(-15%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+
+            50% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+
+        .animate-bounce-slow {
+            animation: bounce-slow 4s infinite;
+        }
+    </style>
+    <script>
+        // Custom Tailwind theme configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5', // Indigo 600
+                        secondary: '#7C3AED', // Violet 500
+                        'text-primary': '#111827', // Gray 900
+                        'text-secondary': '#4B5563', // Gray 600
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50">
+
+    <section class="py-24 md:py-32 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 lg:gap-24 items-center">
+                <div class="relative mb-16 lg:mb-0">
+                    <div class="absolute -top-12 -left-12 w-48 h-48 bg-gradient-to-br from-pink-100 via-transparent to-blue-100 rounded-full opacity-30 blur-3xl animate-spin" style="animation-duration: 20s;"></div>
+                    <div class="absolute -bottom-12 -right-12 w-56 h-56 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl opacity-40 blur-3xl transform rotate-45 animate-spin" style="animation-duration: 25s; animation-direction: reverse;"></div>
+                    <div class="relative bg-white/60 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-gray-100">
+                        <h2 class="text-4xl md:text-5xl font-extrabold tracking-tighter mb-6 text-text-primary">
+                            About Us</h2>
+                        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                            <div class="absolute w-12 h-12 rounded-full animate-bounce-slow top-10 right-2">
+                                <img src="calphark.png" alt="CALPHARK Logo">
+                            </div>
+                        </div>
+                        <p class="text-lg text-text-secondary leading-relaxed mb-6">
+                            <strong>Calphark</strong> is a movement dedicated to navigating the AI revolution by aligning technological progress with human values. We believe the new human advantage lies not in competing with AI, but in cultivating what it cannot replicate: intuition, creativity, and ethical judgment. Through our solutions and ecosystem, we turn this philosophy into action.</p>
+                        <div class="grid grid-cols-2 gap-8 text-center">
+                            <div>
+                                <span class="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">5+</span>
+                                <p class="text-sm text-text-secondary mt-2 tracking-wide">Years of Excellence</p>
+                            </div>
+                            <div>
+                                <span class="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">100+</span>
+                                <p class="text-sm text-text-secondary mt-2 tracking-wide">Successful Events</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex justify-center items-center">
+                    <div class="swiper w-80 h-[450px] py-12" id="about-slider">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide relative overflow-hidden rounded-xl shadow-2xl bg-cover bg-center" style="background-image: url('photo1.jpg');">
+                                <div class="absolute inset-0 bg-[rgba(0,30,60,0.35)] backdrop-blur-[2px] z-10"></div>
+                                <div class="relative z-20 flex flex-col items-center justify-center h-full text-white p-6 text-center">
+                                    <div class="bg-white/20 backdrop-blur-md rounded-2xl p-6 max-w-md mx-auto shadow-lg">
+                                        <div class="w-16 h-16 mx-auto mb-4 text-white/90">
+                                            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
+                                        </div>
+                                        <h3 class="text-2xl font-bold mb-3">Innovation Hub</h3>
+                                        <p class="text-sm leading-relaxed text-gray-100">Cutting-edge technology showcases featuring AI, blockchain, and emerging tech solutions.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide relative overflow-hidden rounded-xl shadow-2xl bg-cover bg-center" style="background-image: url('photo2.jpg');">
+                                <div class="absolute inset-0 bg-[rgba(0,30,60,0.35)] backdrop-blur-[2px] z-10"></div>
+                                <div class="relative z-20 flex flex-col items-center justify-center h-full text-white p-6 text-center">
+                                    <div class="bg-white/20 backdrop-blur-md rounded-2xl p-6 max-w-md mx-auto shadow-lg">
+                                        <div class="w-16 h-16 mx-auto mb-4 text-white/90">
+                                            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zM4 18v-4h3v-3h-3v-4h3c1 0 2-1.25 2-2.25S8 2.5 7 2.5s-2 1.25-2 2.25h-3C2 2.75 4 1 7 1s5 1.75 5 3.75S10 8.5 8 8.5H7V11h4v3H7v4z" /></svg>
+                                        </div>
+                                        <h3 class="text-2xl font-bold mb-3">Elite Networking</h3>
+                                        <p class="text-sm leading-relaxed text-gray-100">Connect with industry leaders, investors, and innovators in curated networking sessions.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide relative overflow-hidden rounded-xl shadow-2xl bg-cover bg-center" style="background-image: url('photo3.jpg');">
+                                <div class="absolute inset-0 bg-[rgba(0,30,60,0.35)] backdrop-blur-[2px] z-10"></div>
+                                <div class="relative z-20 flex flex-col items-center justify-center h-full text-white p-6 text-center">
+                                    <div class="bg-white/20 backdrop-blur-md rounded-2xl p-6 max-w-md mx-auto shadow-lg">
+                                        <div class="w-16 h-16 mx-auto mb-4 text-white/90">
+                                            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                        </div>
+                                        <h3 class="text-2xl font-bold mb-3">Startup Arena</h3>
+                                        <p class="text-sm leading-relaxed text-gray-100">Watch emerging entrepreneurs pitch groundbreaking ideas to top-tier investors and experts.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        var swiper = new Swiper("#about-slider", {
+            effect: "coverflow",
+            grabCursor: true,
+            centeredSlides: true,
+            slidesPerView: "auto",
+            loop: true,
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+            coverflowEffect: {
+                rotate: 50,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            },
+        });
+    </script>
+</body>
+
+</html>
+
+

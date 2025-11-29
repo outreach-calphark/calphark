@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calphark...</title>
+  <style>
+    /* Shared styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    /* Loading screen styles */
+    #loading-screen {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGdmajVtNTFsNW93cjduOXo0bWphMjB0b2w2cnh6ZjVuMDd3bW92dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Qvp6Z2fidQR34IcwQ5/giphy.gif') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .logo {
+      width: 200px;
+      max-width: 60%;
+      filter: drop-shadow(0 0 10px rgba(228, 64, 137, 0.7)) 
+              drop-shadow(0 0 20px rgba(129, 77, 155, 0.6)) 
+              drop-shadow(0 0 30px rgba(74, 77, 175, 0.5));
+      animation: logoPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(228, 64, 137, 0.7)) 
+                drop-shadow(0 0 20px rgba(129, 77, 155, 0.6)) 
+                drop-shadow(0 0 30px rgba(74, 77, 175, 0.5));
+      }
+      50% {
+        filter: drop-shadow(0 0 20px rgba(228, 64, 137, 1)) 
+                drop-shadow(0 0 40px rgba(129, 77, 155, 1)) 
+                drop-shadow(0 0 60px rgba(74, 77, 175, 1));
+      }
+    }
+
+    .loader-container {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin-top: 40px;
+    }
+
+    .orb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: orbit 1.8s linear infinite;
+    }
+
+    .orb:nth-child(1) { background: #E44089; animation-delay: 0s; }
+    .orb:nth-child(2) { background: #814D9B; animation-delay: 0.2s; }
+    .orb:nth-child(3) { background: #4A4DAF; animation-delay: 0.4s; }
+    .orb:nth-child(4) { background: #2266B1; animation-delay: 0.6s; }
+    .orb:nth-child(5) { background: #11406E; animation-delay: 0.8s; }
+
+    @keyframes orbit {
+      0% {
+        transform: rotate(0deg) translateX(25px) rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg) translateX(25px) rotate(-360deg);
+      }
+    }
+
+    /* Transition screen styles */
+    #transition-content {
+      display: none; /* Hidden by default */
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+    video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+    #overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1;
+    }
+    #mute-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <img src="android-chrome-512x512.png" alt="Calphark Logo" class="logo" />
+    <div class="loader-container">
+      <div class="orb"></div>
+      <div class="orb"></div>
+      <div class="orb"></div>
+      <div class="orb"></div>
+      <div class="orb"></div>
+    </div>
+  </div>
+
+  <!-- Transition Content -->
+  <div id="transition-content">
+    <div id="overlay">Click to continue</div>
+    <video id="video" loop>
+      <source src="Calphark_transition.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <button id="mute-button">Mute</button>
+  </div>
+
+  <script>
+    // Wait for the loading screen to finish
+    setTimeout(() => {
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('transition-content').style.display = 'block';
+    }, 8000); // Adjust duration as needed (8000ms = 5 seconds)
+
+    // Transition Content Logic
+    const overlay = document.getElementById('overlay');
+    const video = document.getElementById('video');
+    const muteButton = document.getElementById('mute-button');
+
+    overlay.addEventListener('click', () => {
+      video.play();
+      video.muted = false;
+      overlay.style.display = 'none';
+
+      // Stop video after 15 seconds and redirect
+      setTimeout(() => {
+        window.location.href = "https://register.calphark.com/";  // Redirect after 15 seconds
+      }, 12500);  // 12.8000 ms 
+    });
+
+    // Mute/unmute functionality
+    muteButton.addEventListener('click', () => {
+      video.muted = !video.muted;  // Toggle mute
+      muteButton.textContent = video.muted ? 'Unmute' : 'Mute';  // Change button text
+    });
+  </script>
+<script>window.history.pushState({}, '', '/');</script>
+</body>
+</html>
