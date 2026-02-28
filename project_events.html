@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CALPHARK | Events</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+/* ================= PAGE OFFSET ================= */
+.page-top {
+  margin-top: 110px; /* Reduced for mobile */
+}
+@media (min-width: 768px) {
+  .page-top {
+    margin-top: 150px;
+  }
+}
+
+/* ================= GLASS EFFECT ================= */
+.glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* ================= EVENT CARD ================= */
+.event-card {
+  width: 90%;
+  max-width: 1150px;
+  margin: 20px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .event-card {
+    height: 400px;
+    margin: 40px auto;
+  }
+}
+
+.event-card:active {
+  transform: scale(0.98);
+}
+.event-card:hover {
+  transform: translateY(-6px);
+}
+
+/* ================= IMAGE SLIDER ================= */
+.slider {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+@media (min-width: 768px) {
+  .slider {
+    height: 240px;
+  }
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================= CARD CONTENT ================= */
+.card-content {
+  padding: 20px;
+}
+@media (min-width: 768px) {
+  .card-content {
+    padding: 20px 32px;
+  }
+}
+
+.normal-text {
+  max-height: 90px;
+  overflow: hidden;
+  font-size: 14px;
+  color: #e5e7eb;
+  line-height: 1.6;
+}
+
+/* ================= SUB NAV ================= */
+.subnav button {
+  font-weight: 600;
+  color: #9ca3af;
+  padding-bottom: 6px;
+  transition: all 0.3s;
+}
+
+.subnav button.active {
+  color: white;
+  border-bottom: 2px solid white;
+}
+
+/* ================= POPUP BACKGROUND ================= */
+.detail-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 10px;
+}
+
+/* ================= POPUP BOX ================= */
+.detail-box {
+  width: 100%;
+  max-width: 1010px;
+  height: 80vh;
+  max-height: 600px;
+  background: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  animation: scaleIn 0.25s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.detail-slider {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+@media (min-width: 768px) {
+  .detail-slider {
+    height: 260px;
+  }
+}
+
+/* ================= POPUP CONTENT (NO SCROLLBAR) ================= */
+.detail-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto; /* Allows scrolling */
+  color: #333;
+  line-height: 1.6;
+
+  /* Hides Scrollbar for Firefox */
+  scrollbar-width: none; 
+  /* Hides Scrollbar for IE/Edge */
+  -ms-overflow-style: none; 
+}
+
+/* Hides Scrollbar for Chrome, Safari, and Opera */
+.detail-content::-webkit-scrollbar {
+  display: none;
+}
+
+.detail-footer {
+  height: auto;
+  min-height: 60px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #f9fafb;
+}
+</style>
+</head>
+
+<body class="bg-[#0B1529] font-sans text-white pb-10">
+
+<div id="header-container"></div>
+<script>
+fetch("header.html")
+  .then(res => res.text())
+  .then(data => document.getElementById("header-container").innerHTML = data);
+</script>
+
+<section class="page-top px-4">
+  <div class="max-w-6xl mx-auto glass rounded-2xl flex justify gap-8 md:gap-14 px-10 py-4 md:py-4 subnav">
+    <button id="btn-upcoming" class="active text-lg" onclick="renderEvents('upcoming')">
+      Upcoming
+    </button>
+    <button id="btn-completed" class="text-lg" onclick="renderEvents('completed')">
+      Completed
+    </button>
+  </div>
+</section>
+
+<section id="events" class="pb-20"></section>
+
+<div id="detail" class="hidden detail-bg" onclick="closeOnBg(event)">
+  <div class="detail-box" onclick="event.stopPropagation()">
+
+    <div class="detail-slider slider" id="detailSlider"></div>
+
+    <div class="detail-content" id="detailContent"></div>
+
+    <div class="detail-footer">
+      <div class="flex gap-4 md:gap-6">
+        <a href="https://www.instagram.com" target="_blank">
+          <svg class="w-6 h-6 fill-pink-500 hover:scale-125 transition" viewBox="0 0 24 24">
+            <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10zm-5 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.5-.9a1.1 1.1 0 110 2.2 1.1 1.1 0 010-2.2z"/>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com" target="_blank">
+          <svg class="w-6 h-6 fill-blue-600 hover:scale-125 transition" viewBox="0 0 24 24">
+            <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.7v2.2h.1c.7-1.3 2.4-2.7 5-2.7 5.3 0 6.3 3.5 6.3 8v8.5h-5V16c0-2.3 0-5.3-3.2-5.3-3.2 0-3.7 2.5-3.7 5.1v8.2h-5V8z"/>
+          </svg>
+        </a>
+      </div>
+
+      <button onclick="closeDetail()" class="px-4 py-2 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600 transition">
+        Close
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const eventsData = [
+  {
+    type: "upcoming",
+    title: "AI & ML Hackathon",
+    images: [
+      "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg",
+      "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"
+    ],
+    normalText:
+      "A competitive AI & ML hackathon where teams build intelligent real-world solutions.",
+    fullContent: [
+      "Teams of 2–4 members participate.",
+      "Industry mentors guide the teams.",
+      "Final demos and prizes for winners."
+    ],
+    meta: {
+      date: "August 2026",
+      location: "Chennai",
+      team: "2–4 Members"
+    },
+    postLink: "#"
+  },
+  {
+    type: "completed",
+    title: "Web Development Bootcamp",
+    images: [
+      "https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg",
+      "https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg"
+    ],
+    normalText:
+      "An intensive bootcamp covering frontend and backend web technologies.",
+    fullContent: [
+      "HTML, CSS, JavaScript & backend basics.",
+      "200+ students successfully completed."
+    ],
+    meta: {
+      date: "January 2026",
+      location: "Online",
+      team: "Individual"
+    },
+    postLink: "#"
+  }
+];
+
+/* ================= SLIDER LOGIC ================= */
+function buildSlider(container, images) {
+  container.innerHTML = "";
+  images.forEach((src, i) => {
+    const div = document.createElement("div");
+    div.className = "slide" + (i === 0 ? " active" : "");
+    div.innerHTML = `<img src="${src}">`;
+    container.appendChild(div);
+  });
+
+  if(container.dataset.interval) clearInterval(container.dataset.interval);
+
+  let index = 0;
+  const interval = setInterval(() => {
+    const slides = container.querySelectorAll(".slide");
+    if(slides.length === 0) return;
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+  }, 4000);
+  
+  container.dataset.interval = interval;
+}
+
+/* ================= RENDER EVENTS ================= */
+function renderEvents(type) {
+  const box = document.getElementById("events");
+  box.innerHTML = "";
+
+  document.getElementById("btn-upcoming").classList.remove("active");
+  document.getElementById("btn-completed").classList.remove("active");
+  document.getElementById("btn-" + type).classList.add("active");
+
+  const filtered = eventsData.filter(e => e.type === type);
+  
+  if(filtered.length === 0) {
+      box.innerHTML = `<div class="text-center text-gray-500 mt-10">No events found.</div>`;
+      return;
+  }
+
+  filtered.forEach(e => {
+    const card = document.createElement("div");
+    card.className = "event-card glass";
+    card.onclick = () => openDetail(e);
+
+    card.innerHTML = `
+      <div class="slider"></div>
+      <div class="card-content">
+        <h3 class="text-xl font-bold mb-2 text-white">${e.title}</h3>
+        <p class="normal-text">${e.normalText}</p>
+        <span class="text-blue-300 font-semibold text-xs uppercase tracking-wide mt-4 inline-block">
+          Tap to view details →
+        </span>
+      </div>
+    `;
+
+    box.appendChild(card);
+    buildSlider(card.querySelector(".slider"), e.images);
+  });
+}
+
+/* ================= POPUP LOGIC ================= */
+function openDetail(e) {
+  document.getElementById("detail").classList.remove("hidden");
+  buildSlider(document.getElementById("detailSlider"), e.images);
+
+  document.getElementById("detailContent").innerHTML = `
+    <h2 class="text-2xl font-bold mb-3 text-gray-800">${e.title}</h2>
+    ${e.fullContent.map(p => `<p class="mt-3 text-gray-600">${p}</p>`).join("")}
+    
+    <div class="mt-6 p-4 bg-gray-100 rounded-lg text-sm text-gray-700">
+      <p><strong>📅 Date:</strong> ${e.meta.date}</p>
+      <p><strong>📍 Location:</strong> ${e.meta.location}</p>
+      <p><strong>👥 Team Size:</strong> ${e.meta.team}</p>
+    </div>
+  `;
+}
+
+function closeDetail() {
+  document.getElementById("detail").classList.add("hidden");
+}
+
+function closeOnBg(e) {
+  if (e.target.id === "detail") closeDetail();
+}
+
+/* ================= INIT ================= */
+renderEvents("upcoming");
+</script>
+
+</body>
+</html>

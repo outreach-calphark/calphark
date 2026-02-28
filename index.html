@@ -179,7 +179,7 @@
     <section class="slider-container h-screen">
         <!-- Slide 1 -->
         <div class="slide active">
-            <img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop" alt="Business Meeting" class="slide-image">
+            <img src="slide1.png" alt="Business Meeting" class="slide-image">
             <div class="slide-overlay">
                 <div class="slide-content">
                     <h1 class="slide-title">Welcome to Our Company</h1>
@@ -190,7 +190,7 @@
         
         <!-- Slide 2 -->
         <div class="slide">
-            <img src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop" alt="Team Collaboration" class="slide-image">
+            <img src="slide2.png" alt="Team Collaboration" class="slide-image">
             <div class="slide-overlay">
                 <div class="slide-content">
                     <h1 class="slide-title">Expert Team Solutions</h1>
@@ -201,7 +201,7 @@
         
         <!-- Slide 3 -->
         <div class="slide">
-            <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop" alt="Modern Office" class="slide-image">
+            <img src="slide3.png" alt="Modern Office" class="slide-image">
             <div class="slide-overlay">
                 <div class="slide-content">
                     <h1 class="slide-title">Innovation & Growth</h1>
@@ -222,146 +222,163 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
-    <script>
-        // Module loader
-        async function loadModule(moduleName) {
-            try {
-                const response = await fetch(`${moduleName}.html`);
-                if (!response.ok) throw new Error(`Failed to load ${moduleName}`);
-                return await response.text();
-            } catch (error) {
-                console.error(`Error loading module ${moduleName}:`, error);
-                return '';
-            }
+<script>
+    // --- 1. GLOBAL MODAL FUNCTIONS (Must be defined first) ---
+    window.openContactModal = function() {
+        const modal = document.getElementById("contact-modal");
+        if (modal) {
+            modal.classList.remove("hidden");
+        } else {
+            console.error("Error: Modal element 'contact-modal' not found in DOM yet.");
         }
+    };
 
-        // Load all modules in order
-        async function loadAllModules() {
-            const modules = ['header', 'events', 'about' , 'Our_Philosophy&Vision', 'whatwedo','Our_Philosophy&Vision2' ,'Calphark_Convergence' , 'partners', 'footer'];
-            const app = document.getElementById('app');
-            
-            for (const moduleName of modules) {
-                const moduleContent = await loadModule(moduleName);
-                if (moduleContent) {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = moduleContent;
-                    
-                    // Extract and append HTML content
-                    while (tempDiv.firstChild) {
-                        app.appendChild(tempDiv.firstChild);
-                    }
+    window.closeContactModal = function() {
+        const modal = document.getElementById("contact-modal");
+        if (modal) {
+            modal.classList.add("hidden");
+        }
+    };
+
+    // --- 2. MODULE LOADER ---
+    async function loadModule(moduleName) {
+        try {
+            const response = await fetch(`${moduleName}.html`);
+            if (!response.ok) throw new Error(`Failed to load ${moduleName}`);
+            return await response.text();
+        } catch (error) {
+            console.error(`Error loading module ${moduleName}:`, error);
+            return '';
+        }
+    }
+
+    async function loadAllModules() {
+        // We load 'header' first
+        const modules = ['header', 'events', 'whatwedo', 'Our_Philosophy&Vision2', 'Calphark_Convergence',  'footer'];
+        const app = document.getElementById('app');
+        
+        for (const moduleName of modules) {
+            const moduleContent = await loadModule(moduleName);
+            if (moduleContent) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = moduleContent;
+                while (tempDiv.firstChild) {
+                    app.appendChild(tempDiv.firstChild);
                 }
             }
         }
-
-        // Initialize all Swiper instances after modules load
-        function initializeAllSwipers() {
-            // Hero slider
-            if (document.querySelector('#hero-slider')) {
-                new Swiper("#hero-slider", {
-                    effect: "cards",
-                    // grabCursor: true,
-                    initialSlide: 1,
-                    speed: 5,
-                    loop: true,
-                    rotate: true,
-                    mousewheel: {
-                        invert: false,
-                    },
-                    autoplay: {
-                        delay: 40,
-                        disableOnInteraction: false,
-                    },
-                });
-            }
-
-            // About slider
-            if (document.querySelector('#about-slider')) {
-                new Swiper("#about-slider", {
-                    effect: "cards",
-                    grabCursor: true,
-                    initialSlide: 2,
-                    speed: 500,
-                    loop: true,
-                    rotate: true,
-                    mousewheel: {
-                        invert: false,
-                    },
-                    autoplay: {
-                        delay: 4000,
-                        disableOnInteraction: false,
-                    },
-                });
-            }
-        }
-        // Load modules then initialize swipers
-        async function initializeApp() {
-            await loadAllModules();
-            // Small delay to ensure DOM is fully rendered
-            setTimeout(initializeAllSwipers, 10);
-        }
-
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', initializeApp);
         
-        class HeroSlider {
-            constructor() {
-                this.slides = document.querySelectorAll('.slide');
-                this.indicators = document.querySelectorAll('.indicator');  
-                this.currentSlide = 0;
-                this.slideInterval = null;
-                
-                this.init();
-            }
+        // Initialize header-specific listeners AFTER header HTML is injected
+        initializeHeaderListeners();
+    }
+
+    // --- 3. EVENT LISTENERS (Delegation) ---
+    function initializeHeaderListeners() {
+        // Mobile Menu Toggle logic
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuBtn && mobileMenu) {
+            // Remove old listeners to prevent duplicates
+            menuBtn.replaceWith(menuBtn.cloneNode(true));
+            const newMenuBtn = document.getElementById('menu-btn');
             
-            init() {
-                // Add click event listeners to indicators
-                this.indicators.forEach((indicator, index) => {
-                    indicator.addEventListener('click', () => {
-                        this.goToSlide(index);
-                        this.resetInterval();
-                    });
-                });
-                
-                // Start auto-slide
-                this.startAutoSlide();
-            }
-            
-            goToSlide(slideIndex) {
-                // Remove active class from current slide and indicator
-                this.slides[this.currentSlide].classList.remove('active');
-                this.indicators[this.currentSlide].classList.remove('active');
-                
-                // Update current slide index
-                this.currentSlide = slideIndex;
-                
-                // Add active class to new slide and indicator
-                this.slides[this.currentSlide].classList.add('active');
-                this.indicators[this.currentSlide].classList.add('active');
-            }
-            
-            nextSlide() {
-                const nextIndex = (this.currentSlide + 1) % this.slides.length;
-                this.goToSlide(nextIndex);
-            }
-            
-            startAutoSlide() {
-                this.slideInterval = setInterval(() => {
-                    this.nextSlide();
-                }, 5000); // Change slide every 5 seconds
-            }
-            
-            resetInterval() {
-                clearInterval(this.slideInterval);
-                this.startAutoSlide();
-            }
+            newMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
         }
+
+        // Close modal when clicking outside of it (Background click)
+        const modal = document.getElementById("contact-modal");
+        if (modal) {
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    window.closeContactModal();
+                }
+            });
+        }
+    }
+
+    // Scroll Effect (Always active)
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if (header) {
+            if (window.scrollY > 50) header.classList.add('bg-scrolled');
+            else header.classList.remove('bg-scrolled');
+        }
+    });
+
+    // --- 4. APP INITIALIZATION ---
+    async function initializeApp() {
+        await loadAllModules(); // Wait for HTML to load completely
         
-        // Initialize slider when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            new HeroSlider();
-        });
-    </script>
+        // Initialize Swipers
+        setTimeout(() => {
+            initializeAllSwipers();
+            // Re-run this to ensure listeners attach if they missed the first pass
+            initializeHeaderListeners(); 
+        }, 100);
+
+        // Initialize Hero Slider
+        new HeroSlider();
+    }
+
+    // --- 5. SWIPER & SLIDER CLASSES ---
+    function initializeAllSwipers() {
+        if (document.querySelector('#hero-slider')) {
+            new Swiper("#hero-slider", {
+                effect: "cards", initialSlide: 1, speed: 5, loop: true, rotate: true,
+                autoplay: { delay: 40, disableOnInteraction: false },
+            });
+        }
+        if (document.querySelector('#about-slider')) {
+            new Swiper("#about-slider", {
+                effect: "cards", grabCursor: true, initialSlide: 2, speed: 500, loop: true,
+                autoplay: { delay: 4000, disableOnInteraction: false },
+            });
+        }
+    }
+
+    class HeroSlider {
+        constructor() {
+            this.slides = document.querySelectorAll('.slide');
+            this.indicators = document.querySelectorAll('.indicator');  
+            this.currentSlide = 0;
+            this.slideInterval = null;
+            if(this.slides.length > 0) this.init();
+        }
+        init() {
+            this.indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    this.goToSlide(index);
+                    this.resetInterval();
+                });
+            });
+            this.startAutoSlide();
+        }
+        goToSlide(slideIndex) {
+            this.slides[this.currentSlide].classList.remove('active');
+            this.indicators[this.currentSlide].classList.remove('active');
+            this.currentSlide = slideIndex;
+            this.slides[this.currentSlide].classList.add('active');
+            this.indicators[this.currentSlide].classList.add('active');
+        }
+        nextSlide() {
+            const nextIndex = (this.currentSlide + 1) % this.slides.length;
+            this.goToSlide(nextIndex);
+        }
+        startAutoSlide() {
+            this.slideInterval = setInterval(() => this.nextSlide(), 5000);
+        }
+        resetInterval() {
+            clearInterval(this.slideInterval);
+            this.startAutoSlide();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeApp);
+</script>
+
 </body>
 </html>
 
